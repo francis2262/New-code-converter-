@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bet Code Converter wisdom</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <h1>Bet Code Converter (Live)</h1>
+
+  <label>Booking code:
+    <input id="code" placeholder="e.g. SP12345">
+  </label>
+  <br>
+  From:
+  <select id="from">
+    <option value="sportybet">SportyBet</option>
+    <option value="bet9ja">Bet9ja</option>
+  </select>
+  To:
+  <select id="to">
+    <option value="bet9ja">Bet9ja</option>
+    <option value="sportybet">SportyBet</option>
+  </select>
+  <br>
+  <button id="btn">Convert</button>
+
+  <h3>Result</h3>
+  <pre id="out"></pre>
+
+  <p><a href="/chat.html">Open Live Chat</a></p>
+
+  <script>
+    document.getElementById('btn').addEventListener('click', async () => {
+      const code = document.getElementById('code').value.trim();
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      if(!code) { alert('Enter code'); return; }
+      const res = await fetch('/api/convert', {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({code, from_platform: from, to_platform: to})
+      });
+      const data = await res.json();
+      document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+      </html>
